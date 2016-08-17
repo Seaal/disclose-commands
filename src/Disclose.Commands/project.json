@@ -2,12 +2,17 @@
   "version": "1.0.0-*",
 
   "dependencies": {
+    "Disclose": "0.1.0-alpha4",
     "NETStandard.Library": "1.6.0"
   },
 
   "frameworks": {
+    "net451":  { },
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8"
+      ]
     }
   }
 }
