@@ -7,7 +7,7 @@ namespace Disclose.Commands.WelcomeMessage
     /// <summary>
     /// Sends a Welcome PM when a user joins the server for the first time.
     /// </summary>
-    public class WelcomeMessageHandler : Handler, IUserJoinsServerHandler
+    public class WelcomeMessageHandler : Handler<IUserJoinsServerHandler>, IUserJoinsServerHandler
     {
         private readonly IMessageStrategy _messageStrategy;
 

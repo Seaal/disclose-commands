@@ -8,7 +8,7 @@
   },
 
   "dependencies": {
-    "Disclose": "0.1.0-alpha5",
+    "Disclose": "0.1.0-alpha7",
     "NETStandard.Library": "1.6.0"
   },
 
