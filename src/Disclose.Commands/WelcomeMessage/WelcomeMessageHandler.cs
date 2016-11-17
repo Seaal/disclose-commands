@@ -27,7 +27,10 @@ namespace Disclose.Commands.WelcomeMessage
         {
             string welcomeMessage = await _messageStrategy.GetWelcomeMessage(server);
 
-            await Discord.SendMessageToUser(user, welcomeMessage);
+            if (welcomeMessage != null)
+            {
+                await Discord.SendMessageToUser(user, welcomeMessage);
+            }
         }
     }
 }

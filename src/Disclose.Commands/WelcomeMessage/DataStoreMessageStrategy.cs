@@ -11,12 +11,16 @@ namespace Disclose.Commands.WelcomeMessage
         private IDataStore _dataStore;
         private readonly string _dataKey;
 
-        public DataStoreMessageStrategy()
+
+        public bool HasSetCommand { get; }
+
+        public DataStoreMessageStrategy(bool allowSetCommand)
         {
+            HasSetCommand = allowSetCommand;
             _dataKey = "disclose-welcomeMessage";
         }
 
-        public DataStoreMessageStrategy(string dataKey)
+        public DataStoreMessageStrategy(bool allowSetCommand, string dataKey) : this(allowSetCommand)
         {
             _dataKey = dataKey;
         }
@@ -29,6 +33,16 @@ namespace Disclose.Commands.WelcomeMessage
             }
 
             return await _dataStore.GetServerDataAsync<string>(server, _dataKey);
+        }
+
+        public async Task SetWelcomeMessage(IServer server, string welcomeMessage)
+        {
+            if (_dataStore == null)
+            {
+                throw new InvalidOperationException("The DataStore must be set for the welcome message to be set");
+            }
+
+            await _dataStore.SetServerDataAsync(server, _dataKey, welcomeMessage);
         }
 
         public void Init(IDataStore dataStore)

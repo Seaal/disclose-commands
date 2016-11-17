@@ -10,6 +10,8 @@ namespace Disclose.Commands.WelcomeMessage
     {
         private readonly string _message;
 
+        public bool HasSetCommand => false;
+
         public StringMessageStrategy(string message)
         {
             _message = message;
@@ -18,6 +20,11 @@ namespace Disclose.Commands.WelcomeMessage
         public Task<string> GetWelcomeMessage(IServer server)
         {
             return Task.FromResult(_message);
+        }
+
+        public Task SetWelcomeMessage(IServer server, string welcomeMessage)
+        {
+            return Task.FromResult(0);
         }
 
         public void Init(IDataStore dataStore)
