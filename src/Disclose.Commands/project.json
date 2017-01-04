@@ -1,6 +1,6 @@
 ﻿{
   "title": "Discord.Commands",
-  "version": "0.1.0-alpha1",
+  "version": "0.1.0-alpha2",
   "description": "Common commands for the Disclose framework.",
   "authors": [ "Seaal" ],
   "packOptions": {
