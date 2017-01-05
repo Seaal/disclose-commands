@@ -52,6 +52,13 @@ namespace Disclose.Commands.Gamble
                 return;
             }
 
+            if (amountToBet < 1)
+            {
+                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Invalid Gamble input, you must input a positive number to gamble.");
+
+                return;
+            }
+
             GambleData data = await DataStore.GetUserDataAsync<GambleData>(message.User, "disclose-gamble");
 
             if (arguments == "reset")
