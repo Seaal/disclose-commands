@@ -16,7 +16,7 @@ namespace Disclose.Commands.Gamble
         {
             _options = options;
             _random = new Random();
-            Description = $"Gamble an amount of {options.Currency} to potentially win more. If you run out, reset your {options.Currency} with the reset command";
+            Description = $"Gamble an amount of {options.Currency} to potentially win more. If you run out, reset your {options.Currency} with the \"gamble reset\" command";
         }
 
         public override string CommandName => "gamble";
@@ -47,14 +47,14 @@ namespace Disclose.Commands.Gamble
 
             if (!int.TryParse(arguments, out amountToBet) && arguments != "reset")
             {
-                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Invalid Gamble input, either input a number to gamble or reset to reset your {_options.Currency}.");
+                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Invalid Gamble input, either input a positive whole number to gamble or reset to reset your {_options.Currency}.");
 
                 return;
             }
 
             if (amountToBet < 1)
             {
-                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Invalid Gamble input, you must input a positive number to gamble.");
+                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Invalid Gamble input, you must input a positive whole number to gamble.");
 
                 return;
             }
@@ -94,7 +94,7 @@ namespace Disclose.Commands.Gamble
 
                 await DataStore.SetUserDataAsync(message.User, "disclose-gamble", data);
 
-                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Your {_options.Currency} has been reset to {_options.ResetAmount}.");
+                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Your {_options.Currency} have been reset to {_options.ResetAmount}.");
             }
             else
             {
