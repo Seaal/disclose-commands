@@ -7,21 +7,24 @@ namespace Disclose.Commands.Gamble
 {
     public class GambleInstaller : IInstaller
     {
-        private readonly GambleOptions _options;
+        private readonly GambleInstallerOptions _options;
 
         public GambleInstaller()
         {
-            _options = new GambleOptions();
+            _options = new GambleInstallerOptions();
         }
 
-        public GambleInstaller(Action<GambleOptions> setOptions) : this()
+        public GambleInstaller(Action<GambleInstallerOptions> setOptions) : this()
         {
             setOptions(_options);
         }
 
         public void Install(DiscloseClient discoseClient)
         {
-            discoseClient.Register(new GambleCommandHandler(_options));
+            ICommandHandler gambleCommandHandler = new GambleCommandHandler(_options)
+                                                   .RestrictedToChannels(_options.ChannelRestrictions);
+
+            discoseClient.Register(gambleCommandHandler);
         }
     }
 }
