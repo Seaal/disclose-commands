@@ -13,7 +13,7 @@ namespace Disclose.Commands.Help
         public override string CommandName => "help";
         public override string Description => "Gives information about the commands available to use for this bot";
 
-        public override async Task Handle(IMessage message, string arguments)
+        public override async Task Handle(DiscloseMessage message, string arguments)
         {
             string helpMessage;
 
@@ -28,10 +28,10 @@ namespace Disclose.Commands.Help
                 helpMessage = GetHelpForCommand(commandHandler, message.User) ?? "Command does not exist";
             }
 
-            await Discord.SendMessageToUser(message.User, helpMessage);
+            await Disclose.SendMessageToUser(message.User, helpMessage);
         }
 
-        private string GetHelpForAllCommands(IUser user)
+        private string GetHelpForAllCommands(DiscloseUser user)
         {
             string helpMessage = "Here are the commands available for you:\n\n";
 
@@ -48,7 +48,7 @@ namespace Disclose.Commands.Help
             return helpMessage;
         }
 
-        private string GetHelpForCommand(ICommandHandler commandHandler, IUser user)
+        private string GetHelpForCommand(ICommandHandler commandHandler, DiscloseUser user)
         {
             if (commandHandler != null && (commandHandler.UserFilter == null || commandHandler.UserFilter(user)))
             {

@@ -16,18 +16,18 @@ namespace Disclose.Commands.WelcomeMessage
             _messageStrategy = messageStrategy;
         }
 
-        public override void Init(IDiscloseSettings disclose, IDiscordCommands discord, IDataStore dataStore)
+        public override void Init(IDiscloseFacade disclose, IDataStore dataStore)
         {
             _messageStrategy.Init(dataStore);
 
-            base.Init(disclose, discord, dataStore);
+            base.Init(disclose, dataStore);
         }
 
-        public async Task Handle(IUser user, IServer server)
+        public async Task Handle(DiscloseUser user, DiscloseServer server)
         {
             string welcomeMessage = await _messageStrategy.GetWelcomeMessage(server);
 
-            await Discord.SendMessageToUser(user, welcomeMessage);
+            await Disclose.SendMessageToUser(user, welcomeMessage);
         }
     }
 }

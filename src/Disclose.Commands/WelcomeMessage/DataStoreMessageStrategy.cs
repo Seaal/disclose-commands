@@ -21,7 +21,7 @@ namespace Disclose.Commands.WelcomeMessage
             _dataKey = dataKey;
         }
 
-        public async Task<string> GetWelcomeMessage(IServer server)
+        public async Task<string> GetWelcomeMessage(DiscloseServer server)
         {
             if (_dataStore == null)
             {

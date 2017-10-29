@@ -11,7 +11,7 @@ namespace Disclose.Commands.WelcomeMessage
     /// </summary>
     public interface IMessageStrategy
     {
-        Task<string> GetWelcomeMessage(IServer server);
+        Task<string> GetWelcomeMessage(DiscloseServer server);
         void Init(IDataStore dataStore);
     }
 }

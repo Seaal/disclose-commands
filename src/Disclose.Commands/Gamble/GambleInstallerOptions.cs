@@ -8,7 +8,7 @@ namespace Disclose.Commands.Gamble
 {
     public class GambleInstallerOptions : GambleOptions
     {
-        public Func<IChannel, bool> ChannelRestrictions { get; set; }
+        public Func<DiscloseChannel, bool> ChannelRestrictions { get; set; }
 
         public GambleInstallerOptions()
         {
