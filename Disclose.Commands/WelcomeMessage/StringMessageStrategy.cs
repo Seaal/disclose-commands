@@ -15,7 +15,7 @@ namespace Disclose.Commands.WelcomeMessage
             _message = message;
         }
 
-        public Task<string> GetWelcomeMessage(IServer server)
+        public Task<string> GetWelcomeMessage(DiscloseServer server)
         {
             return Task.FromResult(_message);
         }

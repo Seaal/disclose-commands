@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Disclose.DiscordClient;
 
 namespace Disclose.Commands.Gamble
 {
@@ -22,7 +18,7 @@ namespace Disclose.Commands.Gamble
         public override string CommandName => "gamble";
         public override string Description { get; }
 
-        public override async Task Handle(IMessage message, string arguments)
+        public override async Task Handle(DiscloseMessage message, string arguments)
         {
             if (DataStore == null)
             {
@@ -36,7 +32,7 @@ namespace Disclose.Commands.Gamble
                     Amount = _options.DefaultAmount
                 };
 
-                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> You have {FormatWithCurrency(storedData.Amount)}.");
+                await Disclose.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> You have {FormatWithCurrency(storedData.Amount)}.");
 
                 return;
             }
@@ -47,14 +43,14 @@ namespace Disclose.Commands.Gamble
 
             if (!int.TryParse(arguments, out amountToBet) && arguments != "reset")
             {
-                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Invalid Gamble input, either input a positive whole number to gamble or reset to reset your {_options.Currency}.");
+                await Disclose.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Invalid Gamble input, either input a positive whole number to gamble or reset to reset your {_options.Currency}.");
 
                 return;
             }
 
             if (amountToBet < 1)
             {
-                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Invalid Gamble input, you must input a positive whole number to gamble.");
+                await Disclose.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Invalid Gamble input, you must input a positive whole number to gamble.");
 
                 return;
             }
@@ -71,17 +67,17 @@ namespace Disclose.Commands.Gamble
             }
         }
 
-        private async Task ProcessReset(IMessage message, GambleData data)
+        private async Task ProcessReset(DiscloseMessage message, GambleData data)
         {
             if (data == null)
             {
-                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> You cannot reset until you have played at least once.");
+                await Disclose.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> You cannot reset until you have played at least once.");
             }
             else if (data.ResetTime.HasValue && DateTime.Now < data.ResetTime.Value)
             {
                 TimeSpan remainingResetCooldown = data.ResetTime.Value - DateTime.Now;
 
-                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> You cannot reset right now. You can reset again in {FormatCooldownTime(remainingResetCooldown)}.");
+                await Disclose.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> You cannot reset right now. You can reset again in {FormatCooldownTime(remainingResetCooldown)}.");
             }
             else if (data.Amount < _options.ResetAmount)
             {
@@ -94,15 +90,15 @@ namespace Disclose.Commands.Gamble
 
                 await DataStore.SetUserDataAsync(message.User, "disclose-gamble", data);
 
-                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Your {_options.Currency} have been reset to {_options.ResetAmount}.");
+                await Disclose.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Your {_options.Currency} have been reset to {_options.ResetAmount}.");
             }
             else
             {
-                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> You cannot reset right now, you have {FormatWithCurrency(data.Amount)}.");
+                await Disclose.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> You cannot reset right now, you have {FormatWithCurrency(data.Amount)}.");
             }
         }
 
-        private async Task ProcessBet(IMessage message, GambleData data, int amountToBet)
+        private async Task ProcessBet(DiscloseMessage message, GambleData data, int amountToBet)
         {
             if (data == null)
             {
@@ -114,7 +110,7 @@ namespace Disclose.Commands.Gamble
 
             if (amountToBet > data.Amount)
             {
-                await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> You cannot gamble that much. You only have {FormatWithCurrency(data.Amount)}.");
+                await Disclose.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> You cannot gamble that much. You only have {FormatWithCurrency(data.Amount)}.");
             }
             else
             {
@@ -123,12 +119,12 @@ namespace Disclose.Commands.Gamble
                 if (randomNumber >= 50)
                 {
                     data.Amount += amountToBet;
-                    await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Roll: {randomNumber}. You have won {FormatWithCurrency(amountToBet)} :money_mouth:. You now have {FormatWithCurrency(data.Amount)}.");
+                    await Disclose.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Roll: {randomNumber}. You have won {FormatWithCurrency(amountToBet)} :money_mouth:. You now have {FormatWithCurrency(data.Amount)}.");
                 }
                 else
                 {
                     data.Amount -= amountToBet;
-                    await Discord.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Roll: {randomNumber}. You have lost {FormatWithCurrency(amountToBet)} :face_palm:. You now have {FormatWithCurrency(data.Amount)}.");
+                    await Disclose.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Roll: {randomNumber}. You have lost {FormatWithCurrency(amountToBet)} :face_palm:. You now have {FormatWithCurrency(data.Amount)}.");
                 }
 
                 await DataStore.SetUserDataAsync(message.User, "disclose-gamble", data);
