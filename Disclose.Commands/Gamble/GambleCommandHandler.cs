@@ -48,7 +48,7 @@ namespace Disclose.Commands.Gamble
                 return;
             }
 
-            if (amountToBet < 1)
+            if (amountToBet < 1 && arguments != "reset")
             {
                 await Disclose.SendMessageToChannel(message.Channel, $"<@{message.User.Id}> Invalid Gamble input, you must input a positive whole number to gamble.");
 
